@@ -32,15 +32,7 @@ function effdl_add_post_type() {
 		'items_list_navigation' => __( 'Items list navigation', 'effdl' ),
 		'filter_items_list'     => __( 'Filter items list', 'effdl' ),
 	);
-	$capabilities = array(
-		'edit_post'             => 'edit_post',
-		'read_post'             => 'read_post',
-		'delete_post'           => 'delete_post',
-		'edit_posts'            => 'edit_posts',
-		'edit_others_posts'     => 'edit_others_posts',
-		'publish_posts'         => 'publish_posts',
-		'read_private_posts'    => 'read_private_posts',
-	);
+
 	$args = array(
 		'label'                 => __( 'Dealer', 'effdl' ),
 		'labels'                => $labels,
@@ -56,8 +48,11 @@ function effdl_add_post_type() {
 		'has_archive'           => true,
 		'exclude_from_search'   => false,
 		'publicly_queryable'    => true,
-		'capabilities'          => $capabilities,
-	);
+    );
+    
+    $args = apply_filters('EFFDF_DEALER_POST_TYPE_ARGS', $args);
+    $labels = apply_filters('EFFDF_DEALER_POST_TYPE_LABELS', $labels);
+    
 	register_post_type( 'dealer', $args );
 
 }
