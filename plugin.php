@@ -20,7 +20,8 @@ require_once('inc/enqueue.php');
 
 // Finders
 require_once('inc/dealerfinder.class.php');
-require_once('inc/finders/effectivedealerpostfinder.php');
+require_once('inc/finders/edealer-post-finder.php');
+require_once('inc/finders/edealer-default-post-finder.php');
 
 /* Filters */
 require_once('inc/dealerfilter.class.php');
@@ -29,6 +30,7 @@ require_once('inc/filters/dealersearch.filter.class.php');
 // Elements
 require_once('inc/elements/edealer-elements.php');
 require_once('inc/elements/edealer-post-element.php');
+require_once('inc/elements/edealer-default-post-element.php');
 
 
 

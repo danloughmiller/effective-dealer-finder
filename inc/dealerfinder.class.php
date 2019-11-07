@@ -52,7 +52,7 @@ class EffectiveDealerFinder
 
         $map_data = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'dealers' => $this->getElements()
+            'dealers' => $this->getElementMarkers()
         );
 
         wp_enqueue_script(
@@ -181,7 +181,15 @@ class EffectiveDealerFinder
 	
 	function getElements() {}
     function getElementCount() { }
-    function getElementMarkers() {}
+    function getElementMarkers() {
+        $markers = array();
+
+        foreach ($this->getElements() as $el) {
+            $markers[] = $el->getMarker();
+        }
+
+        return $markers;
+    }
 	function getPageCount()	{ 
         return ceil($this->getElementCount() / $this->itemsPerPage);
     }

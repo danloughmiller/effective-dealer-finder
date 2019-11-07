@@ -1,17 +1,25 @@
+var effdf_map;
+var markerData = [];
+var markers = [];
+var infowindow=false;
+
 function init_effdf_public() {
-console.log('yu');
+
     //Initialize Map
     var mapEl = jQuery('.effdf-map-container');
-    console.log(mapEl);
+    
 	if (jQuery(mapEl).length>0) {
-        console.log('x');
+        
         mapEl = mapEl[0];
-		map = new google.maps.Map(mapEl, { 
+		effdf_map = new google.maps.Map(mapEl, { 
           zoom: 3,
 		  center: {lat: 0, lng: 1 }
         });
+
+        //Setup infowindow
+        infowindow = new google.maps.InfoWindow({content:"", maxWidth: 350});
  
-		setMarkerData(dealer_data.dealers);
+		effdf_setMarkerData(dealer_data.dealers);
 		
 
 		//var markerCluster = new MarkerClusterer(map, markers,

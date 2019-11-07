@@ -38,12 +38,36 @@ class EffectiveDealer_Element
 	
 	public function render()
 	{
-        $ret = '';
-		if ($this->_renderTitle && ($this->_renderEmptyTitle || !empty($this->getTitle())))
-			$ret .= '<span class="effective-dealer-title">' . $this->linkIt($this->getTitle()) .'</span>';
+        $ret = 'TBD';
+		//if ($this->_renderTitle && ($this->_renderEmptyTitle || !empty($this->getTitle())))
+		//	$ret .= '<span class="effective-dealer-title">' . $this->linkIt($this->getTitle()) .'</span>';
 		
 		
 		return $ret;
-	}
+    }
+
+    public function renderInfoWindow()
+    {
+        return 'TBD';
+    }
+
+    function getMarker()
+    {
+        return array(
+            'id'=>$this->getId(),
+            'title'=>$this->getTitle(),
+            'link'=>$this->getLink(),
+            'location'=>$this->getLatLng(),
+            'infoWindowHtml'=>$this->renderInfoWindow()
+        );
+    }
+    
+    function getLatLng()
+    {
+        return array(
+            'lat'=>0,
+            'lng'=>0
+        );
+    }
 	
 }
