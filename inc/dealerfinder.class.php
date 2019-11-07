@@ -7,17 +7,23 @@ class EffectiveDealerFinder
 
     public $filters = null;
 
+    public $_renderMap = true;
     public $_renderFilters = true;
-	public $_renderPages = true;
+    public $_renderPages = false;
 	public $_renderSinglePagePagination = false;
-	
+    
+    /* Map */
+    public $mapSize = array('100%', '500px');
+
+    /* Elements */
     public $elements = array();
     
+    /* Paging */
     public $paged = true;
-	public $itemsPerPage = 50;
+	public $itemsPerPage = 9999;
 	public $page = 1;
 
-    function __construct($dealer_finder_id, $filters = array())
+    function __construct($dealer_finder_id, $filters = array(), $mapSize = array('100%', '500px'))
     {
         $this->dealer_finder_id = $dealer_finder_id;
 
@@ -25,46 +31,92 @@ class EffectiveDealerFinder
 			$this->filters = $filters;
 		} else {
 			$this->filters = new EffectiveDealer_Filters();
-		}
+        }
+        
+        $this->mapSize = $mapSize;
+    }
+
+    public function enqueue()
+    {
+        wp_enqueue_script(
+            'google-api-js',
+            'https://maps.googleapis.com/maps/api/js?key=' . effdf_get_api_key() . '&libraries=geocoder,geometry,places&callback=init_effdf_public',
+            array('effdf-js'), '1.0', true
+        );
+    
+        wp_enqueue_script(
+            'effdf-lib-js',
+            plugins_url() .'/effective-dealer-finder/assets/js/effdf.lib.js' ,
+            array('jquery'), '1.0', true
+        );
+
+        $map_data = array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'dealers' => $this->getElements()
+        );
+
+        wp_enqueue_script(
+            'effdf-js',
+            plugins_url() .'/effective-dealer-finder/assets/js/effdf.js',
+            array('effdf-lib-js'), '1.0', true
+        );
+
+        wp_localize_script( 'effdf-js', 'dealer_data', $map_data ); 
+    
+        wp_enqueue_script('jquery');
+    
     }
 
     public function render()
 	{
+        $this->enqueue();
+
 		$ret = '<div id="effect-dealers-'.$this->dealer_finder_id . '" class="' . implode(' ', $this->getClasses()) . '">';
 		
 		if ($this->_renderFilters && !empty($this->filters))
 			$ret .= $this->filters->render();
-		
-		$ret .= '<div class="effective-dealer-elements-container">';
-		$ret .= 	'<ul class="effective-dealer-elements">';
-		
-		$ret .= $this->renderElements();
-		
-		$ret .= 	'</ul>';
-		$ret .= '</div>';
+        
+        $ret .= $this->renderMap();
+		$ret .= $this->renderElements();	
 
-		if ($this->_renderPages && $this->paged && ($this->_renderSinglePagePagination || $this->getPageCount()>1)) {
-            $ret .= $this->renderPagination();
+        if ($this->_renderPages && 
+            $this->paged && 
+            (   
+                $this->_renderSinglePagePagination ||
+                $this->getPageCount()>1
+            )
+        ) {
+                
+                $ret .= $this->renderPagination();
         }
         
-		$ret .= '</div>';
-		
+        $ret .= '</div>';
+        		
 		return $ret;
-	}
+    }
+    
+    public function renderMap()
+    {
+        $s = '<div id="effdf-map-container-' . $this->dealer_finder_id . '" class="effdf-map-container" style="width:' . $this->mapSize[0] . ';height:' . $this->mapSize[1] . ';"></div>';
+        return $s;
+    }
 	
 	function renderElements()
 	{
+		$ret  = '<div class="effective-dealer-elements-container">';
+		$ret .= 	'<ul class="effective-dealer-elements">';
 		
-		$ret = '';
-		
-		//Filter
+		//TODO: Filter
 		$elements = $this->getElements();
 		
 		if (is_array($elements) && count($elements)>0) {
 			foreach ($elements as $element) {
 				$ret .= $this->renderElement($element);
 			}
-		}
+        }
+        
+        $ret .= 	'</ul>';
+		$ret .= '</div>';
 		
 		return $ret;
 	}
@@ -128,7 +180,8 @@ class EffectiveDealerFinder
 	}
 	
 	function getElements() {}
-	function getElementCount() { }
+    function getElementCount() { }
+    function getElementMarkers() {}
 	function getPageCount()	{ 
         return ceil($this->getElementCount() / $this->itemsPerPage);
     }

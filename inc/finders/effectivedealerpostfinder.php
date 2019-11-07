@@ -47,7 +47,18 @@ class EffectiveDealer_PostFinder extends EffectiveDealerFinder
         }
         
 		return $args;
-	}
+    }
+    
+    function getElementMarkers() {
+        $query = $this->constructQuery();
+        $query['posts_per_page']=-1;
+        $q = get_posts($query);
+
+        $markers = array();
+        foreach ($q as $d) {
+            
+        }
+    }
 	
 	function getElements()
 	{

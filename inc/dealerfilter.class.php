@@ -45,14 +45,18 @@ class EffectiveDealer_Filters
 		$this->filters[] = $filter;
 		return $this;
     }
+
+    
     
     public function render()
 	{
-		
+        if (empty($this->getFilters()))
+            return;
+        
 		$ret = '<div class="effective-dealers-filters"><form method=get>';
 		
 		$y=0;
-		foreach ($this->filters as $f) {
+		foreach ($this->getFilters() as $f) {
 			$ret .= $f->render(++$y);
 		}
 		$ret .= '<div class="effective-dealers-filter-buttons">';

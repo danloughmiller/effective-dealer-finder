@@ -16,33 +16,19 @@ require_once('inc/post_types.php');
 require_once('inc/fields.php');
 require_once('inc/google-maps/google-maps.php');
 
-
-require_once('inc/dealerfinder.class.php');
-require_once('inc/dealerfilter.class.php');
-
-require_once('inc/filters/dealersearch.filter.class.php');
+require_once('inc/enqueue.php');
 
 // Finders
+require_once('inc/dealerfinder.class.php');
 require_once('inc/finders/effectivedealerpostfinder.php');
+
+/* Filters */
+require_once('inc/dealerfilter.class.php');
+require_once('inc/filters/dealersearch.filter.class.php');
 
 // Elements
 require_once('inc/elements/edealer-elements.php');
 require_once('inc/elements/edealer-post-element.php');
 
-/* HOOKS/FILTERS */
-//EFFDF_GOOGLE_API_KEY - Filter to provide api key for google maps/places
 
 
-
-add_action('admin_enqueue_scripts', function() {
-    wp_enqueue_script(
-        'effdf-lib-js',
-        plugins_url() .'/effective-dealer-finder/assets/js/effdf.lib.js'        
-    );
-
-    wp_enqueue_script(
-        'effdf-admin-js',
-        plugins_url() .'/effective-dealer-finder/assets/js/effdf-admin.js',
-        array('effdf-lib-js')   
-    );
-});
