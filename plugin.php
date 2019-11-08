@@ -25,7 +25,9 @@ require_once('inc/finders/edealer-default-post-finder.php');
 
 /* Filters */
 require_once('inc/dealerfilter.class.php');
-require_once('inc/filters/dealersearch.filter.class.php');
+require_once('inc/filters/edealer-locationfilter.php');
+require_once('inc/filters/edealer-dropdownfilter.php');
+require_once('inc/filters/edealer-termsfilter.php');
 
 // Elements
 require_once('inc/elements/edealer-elements.php');

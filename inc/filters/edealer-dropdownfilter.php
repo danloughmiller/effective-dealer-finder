@@ -1,6 +1,6 @@
 <?php
 
-class EffectiveDealer_DropdownFilter extends EffectiveDeal_Filter
+class EffectiveDealer_DropdownFilter extends EffectiveDealer_Filter
 {
     public $options = array();
 	public $selected = '';
@@ -17,7 +17,7 @@ class EffectiveDealer_DropdownFilter extends EffectiveDeal_Filter
 	protected function getSelectName() { }
 	protected function renderElement()
 	{
-		
+		$ret = '';
 		$ret .= '<select class="' . ($this->_renderSelect2?'egrid-select2':'') . '" data-minimum-results-for-search="Infinity" name="' . $this->getSelectName() . '">';
 		
 		if (!empty($this->placeholder))
