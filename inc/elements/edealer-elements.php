@@ -43,10 +43,19 @@ class EffectiveDealer_Element
 
     public function renderInfoWindow($wrap='<div class="effdf-infowindow">%s</div>')
     {
-        $ret = sprintf('<a href="%s">%s</a>', $this->getLink(), $this->getTitle());
+        $title = sprintf('<a href="%s">%s</a>', $this->getLink(), $this->getTitle());
         $ret = sprintf($wrap, $ret);
 
         return $ret;
+    }
+
+    protected function addIWElement($html, $field, $prefix='', $suffix='')
+    {
+        $value = get_post_meta($this->post->ID, $field, true);
+        if (!empty($value))
+            $html .= '<p class="' . $field . '">' . $prefix . $value . $suffix .'</p>';
+
+        return $html;
     }
 
     function getMarker()

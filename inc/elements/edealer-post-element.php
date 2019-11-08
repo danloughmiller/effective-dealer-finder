@@ -32,10 +32,8 @@ class EffectiveDealer_PostElement extends EffectiveDealer_Element
 	
 	public function getLink() {
 		return get_permalink($this->post->ID);
-	}
-	
-
-    
+    }
+        
     function getLatLng()
     {
         $latitude = get_post_meta($this->post->ID, 'dealer_latitude', true);
@@ -46,6 +44,8 @@ class EffectiveDealer_PostElement extends EffectiveDealer_Element
             'lng'=>floatval($longitude)
         );
     }
+
+    
 	
 }
 

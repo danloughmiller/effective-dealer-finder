@@ -13,7 +13,7 @@ function init_effdf_admin()
             var place = this.getPlace();
             
             var formatted_address = place.formatted_address;
-           // $('#dealer_location').val(formatted_address);
+            $('#dealer_location').val(formatted_address);
 
             var lat = place.geometry.location.lat();
             var lng = place.geometry.location.lng();
