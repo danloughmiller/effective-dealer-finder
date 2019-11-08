@@ -34,16 +34,7 @@ class EffectiveDealer_PostElement extends EffectiveDealer_Element
 		return get_permalink($this->post->ID);
 	}
 	
-	public function render()
-	{
 
-		
-        $ret .= parent::render();
-
-		
-		
-		return $ret;
-    }
     
     function getLatLng()
     {

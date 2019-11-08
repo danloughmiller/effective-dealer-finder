@@ -5,9 +5,6 @@ class EffectiveDealer_Element
 {
 	public $id = false;
 	
-	public $_renderTitle = true;
-	public $_renderEmptyTitle = false;
-	
 	function __construct($id)
 	{
 		$this->id = $id;
@@ -24,8 +21,8 @@ class EffectiveDealer_Element
 		
 		return array_merge(array('effective-dealer-element'), $additional);
 	}
-	public function getTitle() { }
-	public function getLink() { }
+	public function getTitle() { return ''; }
+	public function getLink() { return ''; }
 	public function linkIt($html, $attrs='') {
 		$link = $this->getLink();
 		if (!empty($link)) {
@@ -36,19 +33,20 @@ class EffectiveDealer_Element
 		return $html;
 	}
 	
-	public function render()
+	public function render($wrap='%s')
 	{
-        $ret = 'TBD';
-		//if ($this->_renderTitle && ($this->_renderEmptyTitle || !empty($this->getTitle())))
-		//	$ret .= '<span class="effective-dealer-title">' . $this->linkIt($this->getTitle()) .'</span>';
-		
-		
+        $ret = sprintf('<a href="%s">%s</a>', $this->getLink(), $this->getTitle());
+        $ret = sprintf($wrap, $ret);
+
 		return $ret;
     }
 
-    public function renderInfoWindow()
+    public function renderInfoWindow($wrap='<div class="effdf-infowindow">%s</div>')
     {
-        return 'TBD';
+        $ret = sprintf('<a href="%s">%s</a>', $this->getLink(), $this->getTitle());
+        $ret = sprintf($wrap, $ret);
+
+        return $ret;
     }
 
     function getMarker()
