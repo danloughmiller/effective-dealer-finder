@@ -3,7 +3,7 @@
 Plugin Name: Effective Dealer Finder
 Plugin URI: 
 Description: 
-Version: 1.0
+Version: 1.1
 Author: Daniel Loughmiller / EffectWebAgency
 Author URI: 
 Text Domain: 

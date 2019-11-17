@@ -82,7 +82,7 @@ class EffectiveDealerFinder
 		$ret = '<div id="effect-dealers-'.$this->dealer_finder_id . '" class="' . implode(' ', $this->getClasses()) . '">';
 		
 		if ($this->_renderFilters && !empty($this->filters))
-			$ret .= $this->filters->render();
+            $ret .= $this->renderFilters();
         
         $ret .= $this->renderMap();
 		$ret .= $this->renderElements();	
@@ -101,6 +101,11 @@ class EffectiveDealerFinder
         $ret .= '</div>';
         		
 		return $ret;
+    }
+
+    public function renderFilters()
+    {
+        return $this->filters->render();
     }
     
     public function renderMap()
