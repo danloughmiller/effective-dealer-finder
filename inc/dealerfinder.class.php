@@ -41,13 +41,13 @@ class EffectiveDealerFinder
         wp_enqueue_script(
             'google-api-js',
             'https://maps.googleapis.com/maps/api/js?key=' . effdf_get_api_key() . '&libraries=geocoder,geometry,places&callback=init_effdf_public',
-            array('effdf-js'), '1.0', true
+            array('effdf-js'), '1.1', true
         );
     
         wp_enqueue_script(
             'effdf-lib-js',
             plugins_url() .'/effective-dealer-finder/assets/js/effdf.lib.js' ,
-            array('jquery'), '1.0', true
+            array('jquery'), '1.1', true
         );
 
         $map_data = $this->getMapData();
@@ -55,7 +55,7 @@ class EffectiveDealerFinder
         wp_enqueue_script(
             'effdf-js',
             plugins_url() .'/effective-dealer-finder/assets/js/effdf.js',
-            array('effdf-lib-js'), '1.0', true
+            array('effdf-lib-js'), '1.1.5', true
         );
 
         wp_localize_script( 'effdf-js', 'dealer_data', $map_data ); 

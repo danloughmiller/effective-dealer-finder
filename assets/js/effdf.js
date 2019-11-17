@@ -111,19 +111,38 @@ function effdf_setMarkerData(data)
 	var bounds = new google.maps.LatLngBounds();
 	
 	markers = data.map(function(dealer, i) { 
-	  var marker = new google.maps.Marker({ 
-		position: dealer.location,
-		map: map
-	  });
-	  
-	  bounds.extend(dealer.location);
-	  
-	  google.maps.event.addListener(marker, 'click', (function(marker, i) {
-		  return function() {
-			  infowindow.setContent(markerData[i].infoWindowHtml);
-			  infowindow.open(map, marker); 
-		  }
-	  })(marker,i));
+        var mdata = { 
+            position: dealer.location,
+            map: map
+        };
+        console.log('icon: ' + dealer.icon);
+        if (dealer.icon != undefined && dealer.icon != '') {
+            var icon = {
+                url: dealer.icon,
+            };
+
+            if (dealer.icon_width)
+            icon.scaledSize = new google.maps.Size(dealer.icon_width, dealer.icon_height);
+
+             mdata = { 
+                position: dealer.location,
+                map: map,
+                icon: icon
+            };            
+        }
+
+        console.log(mdata);
+
+        var marker = new google.maps.Marker(mdata);
+
+        bounds.extend(dealer.location);
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infowindow.setContent(markerData[i].infoWindowHtml);
+                infowindow.open(map, marker); 
+            }
+        })(marker,i));
 	  
 	  return marker;
 	});
