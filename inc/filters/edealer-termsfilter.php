@@ -10,7 +10,12 @@ class EffeciveDealer_TermsFilter extends EffectiveDealer_DropdownFilter {
 		
 		if ($taxonomy) {
 			$this->taxonomy = $taxonomy;
-            $terms = get_terms(array('taxonomy'=>$taxonomy, 'parent'=>0));
+            $terms = get_terms(
+				array(
+					'taxonomy'=>$taxonomy,
+					'parent'=>0
+				)
+			);
 
             if (!is_wp_error($terms)) {
                 if ($terms) {
