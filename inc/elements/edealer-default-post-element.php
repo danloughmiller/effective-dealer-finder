@@ -7,8 +7,6 @@ class EffectiveDealer_DefaultPostElement extends EffectiveDealer_PostElement
         parent::__construct($post);
     }
 
-    
-
     public function renderInfoWindow($wrap='<div class="effdf-infowindow">%s</div>')
     {
         $html = sprintf('<a href="%s">%s</a>', $this->getLink(), $this->getTitle());

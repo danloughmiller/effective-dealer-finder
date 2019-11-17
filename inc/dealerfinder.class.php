@@ -50,10 +50,7 @@ class EffectiveDealerFinder
             array('jquery'), '1.0', true
         );
 
-        $map_data = array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'dealers' => $this->getElementMarkers()
-        );
+        $map_data = $this->getMapData();
 
         wp_enqueue_script(
             'effdf-js',
@@ -66,6 +63,16 @@ class EffectiveDealerFinder
         wp_enqueue_script('jquery');
         
         wp_enqueue_style('effdf-css', plugins_url() .'/effective-dealer-finder/assets/css/effdf.css');
+    }
+
+    function getMapData()
+    {
+        $map_data = array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'dealers' => $this->getElementMarkers()
+        );
+
+        return $map_data;
     }
 
     public function render()

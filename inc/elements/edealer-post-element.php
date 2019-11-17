@@ -20,7 +20,7 @@ class EffectiveDealer_PostElement extends EffectiveDealer_Element
 	{
 		$classes = array('effective-dealer-post-element');
 		
-				return array_merge(
+		return array_merge(
 			parent::getClasses($additional), 
 			$classes
 		);
