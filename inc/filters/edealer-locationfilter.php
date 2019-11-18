@@ -6,14 +6,16 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
     public $currentValue = '';
     public $currentLat = '';
     public $currentLng = '';
+    public $maxDistance = 9999;
 
-    public function __construct($id, $title, $placeholder='', $currentValue='', $currentLat='', $currentLng='')
+    public function __construct($id, $title, $placeholder='', $currentValue='', $currentLat='', $currentLng='', $maxDistance=9999)
     {
         parent::__construct($id, $title, $placeholder);
 
         $this->currentValue=$currentValue;
         $this->currentLat=$currentLat;
         $this->currentLng=$currentLng;
+        $this->maxDistance = $maxDistance;
 
 
         $this->_renderTitle=false;
@@ -41,7 +43,8 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
             $nearby_ids = $this->getDealersByLatLng(
                 $args['post_type'],
                 $this->currentLat,
-                $this->currentLng
+                $this->currentLng,
+                $this->maxDistance
             );
 
             $args['post__in'] = $nearby_ids;
@@ -50,7 +53,7 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
         
     }
     
-    protected function getDealersByLatLng($post_type, $lat, $lng, $maxDistance=100, $maxResults=3)
+    protected function getDealersByLatLng($post_type, $lat, $lng, $maxDistance=100, $maxResults=100)
     {
         global $wpdb;
         $sql = "SELECT wp_posts.ID, pm1.meta_value as lat, pm2.meta_value as lng,
