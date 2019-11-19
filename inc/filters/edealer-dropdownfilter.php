@@ -5,7 +5,7 @@ class EffectiveDealer_DropdownFilter extends EffectiveDealer_Filter
     public $options = array();
 	public $selected = '';
 	
-	public $_renderSelect2 = true;
+	public $_renderSelect2 = false;
 	
 	public function __construct($id, $title, $placeholder='', $options=array(), $selected='')
 	{

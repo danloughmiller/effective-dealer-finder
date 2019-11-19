@@ -60,9 +60,13 @@ class EffectiveDealer_Filters
 			$ret .= $f->render(++$y);
 		}
 		$ret .= '<div class="effective-dealers-filter-buttons">';
-		$ret .= '	<button class="edealers-button edealers-button-update-filter" type="submit">' . self::_('update_filters') . '</button>';
-		$ret .= '	<a class="edealers-button edealers-button-reset-filter" href="' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) . '">' . self::_('reset_filters') . '</a>';
-		$ret .= '</div>';
+		if (!empty(self::_('update_filters')))
+			$ret .= '	<button class="edealers-button edealers-button-update-filter" type="submit">' . self::_('update_filters') . '</button>';
+
+		if (!empty(self::_('reset_filters')))
+			$ret .= '	<a class="edealers-button edealers-button-reset-filter" href="' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) . '">' . self::_('reset_filters') . '</a>';
+		
+			$ret .= '</div>';
 		$ret .= '</form></div>';
 		
 		return $ret;

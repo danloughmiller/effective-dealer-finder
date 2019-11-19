@@ -62,7 +62,7 @@ class EffectiveDealerFinder
     
         wp_enqueue_script('jquery');
         
-        wp_enqueue_style('effdf-css', plugins_url() .'/effective-dealer-finder/assets/css/effdf.css');
+        wp_enqueue_style('effdf-css', plugins_url() .'/effective-dealer-finder/assets/css/effdf.css', array(), '1.2.8');
     }
 
     function getMapData()

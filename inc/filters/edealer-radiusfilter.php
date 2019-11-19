@@ -5,6 +5,8 @@ class EffeciveDealer_RadiusFilter extends EffectiveDealer_DropdownFilter {
 	
 	public function __construct($id, $title, $placeholder='', $options=array(), $selected='')
 	{
+        parent::__construct($id, $title, $placeholder, $options, $selected);
+
         if (empty($options)) {
             $options = array(
                 '10'=>'10 miles',
@@ -14,9 +16,12 @@ class EffeciveDealer_RadiusFilter extends EffectiveDealer_DropdownFilter {
                 '250'=>'250 miles',
                 '99999'=>'Any distance'
             );
+            foreach ($options as $k=>$v) {
+                $this->addOption($k, $v);
+            }
         }
 
-		parent::__construct($id, $title, $placeholder, $options, $selected);
+		
     }
     
 	
