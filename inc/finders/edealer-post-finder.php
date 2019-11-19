@@ -18,7 +18,7 @@ class EffectiveDealer_PostFinder extends EffectiveDealerFinder
         $this->createElementCallback = $createElementCallback;
 	}
 	
-	protected function constructQuery()
+	protected function constructQuery($applyFilters=true)
 	{
 		global $wpdb;
 		
@@ -35,7 +35,7 @@ class EffectiveDealer_PostFinder extends EffectiveDealerFinder
             $args = array_merge($args, $this->additional_query_args);
 		
 		//If this has filters we'll apply those now
-		if (!empty($this->filters->filters) && count($this->filters->filters)>0) {
+		if ($applyFilters && !empty($this->filters->filters) && count($this->filters->filters)>0) {
 			$tax_query = array();
 			
 			foreach ($this->filters->filters as $filter) {
@@ -49,9 +49,11 @@ class EffectiveDealer_PostFinder extends EffectiveDealerFinder
 		return $args;
     }
     	
-	function getElements()
+	function getElements($applyFilters=true)
 	{
-        $posts = get_posts($this->constructQuery());
+		$posts = get_posts($this->constructQuery($applyFilters));
+
+			
 					
 		$elements = array();
 		foreach ($posts as $r) {

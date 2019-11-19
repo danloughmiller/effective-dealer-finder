@@ -192,7 +192,7 @@ class EffectiveDealerFinder
 		return '?edealer_page='.$pindex;
 	}
 	
-	function getElements() {}
+	function getElements($applyFilters=true) {}
     function getElementCount() { }
     function getElementMarkers() {
         $markers = array();
