@@ -53,7 +53,6 @@ class EffectiveDealer_PostFinder extends EffectiveDealerFinder
 	{
 		$posts = get_posts($this->constructQuery($applyFilters));
 
-			
 					
 		$elements = array();
 		foreach ($posts as $r) {

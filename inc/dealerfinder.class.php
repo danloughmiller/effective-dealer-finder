@@ -9,8 +9,6 @@ class EffectiveDealerFinder
 
     public $_renderMap = true;
     public $_renderFilters = true;
-    public $_renderPages = false;
-	public $_renderSinglePagePagination = false;
     
     /* Map */
     public $mapSize = array('100%', '500px');
@@ -75,29 +73,22 @@ class EffectiveDealerFinder
         return $map_data;
     }
 
-    public function render()
+    public function render($html=false)
 	{
         $this->enqueue();
 
 		$ret = '<div id="effect-dealers-'.$this->dealer_finder_id . '" class="' . implode(' ', $this->getClasses()) . '">';
-		
-		if ($this->_renderFilters && !empty($this->filters))
-            $ret .= $this->renderFilters();
         
-        $ret .= $this->renderMap();
-		$ret .= $this->renderElements();	
-
-        if ($this->_renderPages && 
-            $this->paged && 
-            (   
-                $this->_renderSinglePagePagination ||
-                $this->getPageCount()>1
-            )
-        ) {
-                
-                $ret .= $this->renderPagination();
+        if (!empty($html)) {
+            $ret .= $html;
+        } else {
+            if ($this->_renderFilters && !empty($this->filters))
+                $ret .= $this->renderFilters();
+            
+            $ret .= $this->renderMap();
+            $ret .= $this->renderElements();
         }
-        
+                
         $ret .= '</div>';
         		
 		return $ret;

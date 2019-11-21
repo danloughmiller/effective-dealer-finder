@@ -7,8 +7,9 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
     public $currentLat = '';
     public $currentLng = '';
     public $maxDistance = 9999;
+    public $maxResults = false;
 
-    public function __construct($id, $title, $placeholder='', $currentValue='', $currentLat='', $currentLng='', $maxDistance=9999)
+    public function __construct($id, $title, $placeholder='', $currentValue='', $currentLat='', $currentLng='', $maxDistance=9999, $maxResults=false)
     {
         parent::__construct($id, $title, $placeholder);
 
@@ -16,14 +17,14 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
         $this->currentLat=$currentLat;
         $this->currentLng=$currentLng;
         $this->maxDistance = $maxDistance;
-
+        $this->maxResults = $maxResults;
 
         $this->_renderTitle=false;
     }
 
     protected function renderElement()
     {
-        $html = '<input class="effdf_location_search" name="edealer_filters[location][ds]" type="text" value="' . $this->currentValue . '" />';
+        $html = '<input class="effdf_location_search" placeholder="'. $this->placeholder . '" name="edealer_filters[location][ds]" type="text" value="' . $this->currentValue . '" />';
         $html .= '<input class="ds-lat" name="edealer_filters[location][lat]" type="hidden" value="' . $this->currentLat . '" />';
         $html .= '<input class="ds-lng" name="edealer_filters[location][lng]" type="hidden" value="' . $this->currentLng . '" />';
         return $html;
@@ -44,10 +45,15 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
                 $args['post_type'],
                 $this->currentLat,
                 $this->currentLng,
-                $this->maxDistance
+                $this->maxDistance,
+                $this->maxResults
             );
 
-            $args['post__in'] = $nearby_ids;
+            if (!empty($nearby_ids)) {
+                $args['post__in'] = $nearby_ids;
+            } else {
+                $args['post__in'] = array('nomatch');
+            }
         }
 
         
@@ -61,20 +67,15 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
 			   * acos( cos( radians($lat) ) 
                * cos( radians(pm1.meta_value) ) 
                * cos( radians(pm2.meta_value) - radians($lng)) + sin(radians($lat)) 
-               * sin( radians(pm1.meta_value))) as distance_miles,
-			   
-			6371 
-			   * acos( cos( radians($lat) ) 
-               * cos( radians(pm1.meta_value) ) 
-               * cos( radians(pm2.meta_value) - radians($lng)) + sin(radians($lat)) 
-               * sin( radians(pm1.meta_value))) as distance_km
-	 
+               * sin( radians(pm1.meta_value))) as distance_miles
 			FROM " . $wpdb->prefix. 'posts as wp_posts
 			INNER JOIN ' . $wpdb->prefix . 'postmeta as pm1 ON pm1.post_id = wp_posts.ID AND pm1.meta_key=\'dealer_latitude\' 
 			INNER JOIN ' . $wpdb->prefix . 'postmeta as pm2 ON pm2.post_id = wp_posts.ID AND pm2.meta_key=\'dealer_longitude\'
-            WHERE post_type=\'' . $post_type . '\' AND post_status=\'publish\' GROUP BY wp_posts.ID
+            WHERE post_type=\'' . $post_type . '\' AND post_status=\'publish\' 
+            
+            
 			ORDER BY distance_miles
-            LIMIT ' . $maxResults ;
+            ' . (!empty($maxResults)?'LIMIT ' . $maxResults:'') ;
         
         $results = $wpdb->get_results($sql);
         
@@ -83,6 +84,8 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
             if (empty($maxDistance) || $r->distance_miles < $maxDistance)
                 $ids[] = $r->ID;
         }
+
+        
         
         return $ids;
     }
