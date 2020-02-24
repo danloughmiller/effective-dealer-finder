@@ -11,24 +11,26 @@ function init_effdf_admin()
 
         autocomplete.addListener('place_changed', function() {
             var place = this.getPlace();
+
+            console.log(place);
             
             var formatted_address = place.formatted_address;
-            $('#dealer_location').val(formatted_address);
+            jQuery('#dealer_location').val(formatted_address);
 
             var lat = place.geometry.location.lat();
             var lng = place.geometry.location.lng();
             
-            $('#dealer_latitude').val(lat);
-            $('#dealer_longitude').val(lng);
+            jQuery('#dealer_latitude').val(lat);
+            jQuery('#dealer_longitude').val(lng);
 
             var phone = place.formatted_phone_number;
             if (phone) {
-                $('#dealer_phone').val(phone);
+                jQuery('#dealer_phone').val(phone);
             }
 
             var website = place.website;
             if (website) {
-                $('#dealer_website').val(website);
+                jQuery('#dealer_website').val(website);
             }
         });
     }
