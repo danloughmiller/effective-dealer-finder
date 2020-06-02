@@ -16,7 +16,11 @@ function effdf_add_dealer_metabox( $meta_boxes ) {
                 'type'=>'text',
                 'name'=>esc_html__('Location', 'effdf'),
                 'class'=>'gautocomplete'
-            ),
+			),
+			array('id'=>$prefix.'country',
+				'type'=>'text',
+				'name'=>esc_html__('Country', 'effdf'),
+			),
 			array(
 				'id' => $prefix . 'phone',
 				'type' => 'text',

@@ -1,22 +1,19 @@
-
 .effective-dealer-search-filter input {
-    width: 100%;
+  width: 100%;
 }
-
-.effective-dealers-filters > form { 
-    width: 100%; 
-    display: flex;
-    flex-wrap: wrap;
+.effective-dealers-filters > form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
-
-.effective-dealers-filters > form input, .effective-dealers-filters > form select { 
-    width: 100% !important;
-    max-width: 100% !important;
+.effective-dealers-filters > form input,
+.effective-dealers-filters > form select {
+  width: 100% !important;
+  max-width: 100% !important;
 }
-
 .effective-dealers-filters > form > * {
-    margin-top: .5em;
-    margin-bottom: .5em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
