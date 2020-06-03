@@ -38,7 +38,7 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
 		);
     }
     
-    function constructQuery(&$args, &$tax_query)
+    function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
         if (!empty($this->currentLat) && !empty($this->currentLng)) {
             $nearby_ids = $this->getDealersByLatLng(

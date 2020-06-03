@@ -23,7 +23,7 @@ class EffectiveDealer_Search_Filter extends EffectiveDealer_Filter
 		);
     }
     
-    function constructQuery(&$args, &$tax_query)
+    function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
 		//if (!empty($this->currentValue))
 		//	$args['s'] = $this->currentValue;

@@ -37,12 +37,14 @@ class EffectiveDealer_PostFinder extends EffectiveDealerFinder
 		//If this has filters we'll apply those now
 		if ($applyFilters && !empty($this->filters->filters) && count($this->filters->filters)>0) {
 			$tax_query = array();
+			$meta_query = array();
 			
 			foreach ($this->filters->filters as $filter) {
-				$filter->constructQuery($args, $tax_query);
+				$filter->constructQuery($args, $tax_query, $meta_query);
 			}
 			
 			$args['tax_query'] = $tax_query;
+			$args['meta_query'] = $meta_query;
 			
         }
         

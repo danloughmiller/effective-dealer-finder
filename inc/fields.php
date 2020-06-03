@@ -60,7 +60,7 @@ function effdf_add_dealer_metabox( $meta_boxes ) {
 		),
     );
     
-    $meta_boxes = apply_filters('EFFDF_ADD_DEALER_METABOX', $meta_boxes);
+    $meta_boxes = apply_filters('EFFDF_ADD_DEALER_METABOX', $meta_boxes, $prefix);
 	return $meta_boxes;
 }
 add_filter( 'rwmb_meta_boxes', 'effdf_add_dealer_metabox' );

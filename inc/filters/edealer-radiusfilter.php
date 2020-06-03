@@ -39,7 +39,7 @@ class EffeciveDealer_RadiusFilter extends EffectiveDealer_DropdownFilter {
 	}
     
     //This will be implemented by the location filter or similar
-	function constructQuery(&$args, &$tax_query)
+	function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
 		
     }

@@ -1,8 +1,12 @@
-1.1.4 - 6/2/2020
+1.1.4 - 6/3/2020
 ----------------
-- CSS now uses LessCSS
-
++ CSS now uses LessCSS
++ Dealers now have a country field in the admin
++ Country field populates from places api response
++ EFFDF_ADD_DEALER_METABOX filter now passes $prefix variable to filters
++ Finders now pass meta_query to constructQuery method of filters
++ Added EffeciveDealer_MetaValueDropdownFilter
 
 <1.1.3 - 2020
 -------------
-- Initial Release
++ Initial Release

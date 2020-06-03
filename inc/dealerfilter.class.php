@@ -122,7 +122,7 @@ abstract class EffectiveDealer_Filter
 		return array_merge(array('effective-dealers-filter'), $additional);
 	}
 	
-	public function constructQuery(&$args, &$tax_query)
+	public function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
 
 	}

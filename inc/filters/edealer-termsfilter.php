@@ -52,7 +52,7 @@ class EffeciveDealer_TermsFilter extends EffectiveDealer_DropdownFilter {
 		);
 	}
 	
-	function constructQuery(&$args, &$tax_query)
+	function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
 		if (!empty($this->selected)) {
 			$tax_query[] = array(

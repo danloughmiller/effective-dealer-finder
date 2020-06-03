@@ -29,6 +29,7 @@ require_once('inc/filters/edealer-locationfilter.php');
 require_once('inc/filters/edealer-dropdownfilter.php');
 require_once('inc/filters/edealer-termsfilter.php');
 require_once('inc/filters/edealer-radiusfilter.php');
+require_once('inc/filters/edealer-meta-value-dropdown.filter.php');
 
 // Elements
 require_once('inc/elements/edealer-elements.php');
