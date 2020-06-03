@@ -13,7 +13,8 @@ function init_effdf_admin()
             var place = this.getPlace();
 
             var add = placeToAddress(place);
-            jQuery('#dealer_country').val(add.Country);
+            jQuery('#dealer_country').val(add.Country.long_name);
+            console.log(add.Country);
             
             var formatted_address = place.formatted_address;
             jQuery('#dealer_location').val(formatted_address);
