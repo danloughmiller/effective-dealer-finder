@@ -1,20 +1,32 @@
 function init_effdf_admin()
 {
  
-    
+    console.log('Initializing EFFDF');
     //Initialize autocomplete on admin facing location fields
     var input = document.getElementById('dealer_location');
+    setupLocationField(input);
 
+}
+
+function setupLocationField(input)
+{
     if (input) {
+        console.log('Initializing Autocomplete');
         var autocomplete = new google.maps.places.Autocomplete(input);
-        autocomplete.setFields(['address_components', 'formatted_address', 'adr_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
+        autocomplete.setFields(['place_id', 'address_components', 'formatted_address', 'adr_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
 
         autocomplete.addListener('place_changed', function() {
             var place = this.getPlace();
-
+            console.log(place);
             var add = placeToAddress(place);
+            jQuery('#dealer_address').val(add.StreetNumber.long_name + ' ' + add.StreetName.long_name);
+            jQuery('#dealer_address2').val('');
+            jQuery('#dealer_city').val(add.City.long_name);
+            jQuery('#dealer_state').val(add.State.long_name);
+            jQuery('#dealer_postal_code').val(add.Zip.long_name);
             jQuery('#dealer_country').val(add.Country.long_name);
-            console.log(add.Country);
+            jQuery('#dealer_place_id').val(place.place_id);
+            console.log(add);
             
             var formatted_address = place.formatted_address;
             jQuery('#dealer_location').val(formatted_address);
@@ -35,8 +47,9 @@ function init_effdf_admin()
                 jQuery('#dealer_website').val(website);
             }
         });
+    } else {
+        console.log('No autocomplete element');
     }
-
 }
 
 

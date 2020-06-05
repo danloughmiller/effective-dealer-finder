@@ -1,8 +1,14 @@
+1.1.5 - 6/4/2020
+----------------
++ Address fields can now be exposed by using the EFFDF_ENABLE_EXTENDED_ADDRESS_FIELDS filter
+
 1.1.4 - 6/3/2020
 ----------------
 + CSS now uses LessCSS
 + Dealers now have a country field in the admin
-+ Country field populates from places api response
++ Dealers now have a state field in the admin
++ Country and State field populates from places api response
++ Dealers now store place_id for future use
 + EFFDF_ADD_DEALER_METABOX filter now passes $prefix variable to filters
 + Finders now pass meta_query to constructQuery method of filters
 + Added EffeciveDealer_MetaValueDropdownFilter

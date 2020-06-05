@@ -16,6 +16,11 @@ class EffeciveDealer_MetaValueDropdownFilter extends EffectiveDealer_DropdownFil
 			foreach ($this->_suppliedoptions as $key=>$option) {
 				$this->addOption($key, $option);
 			}
+		} else {
+			$values = $this->getDistinctValues($meta_key);
+			foreach ($values as $v) {
+				$this->addOption($v, $v);
+			}
 		}
 
     }
@@ -24,7 +29,7 @@ class EffeciveDealer_MetaValueDropdownFilter extends EffectiveDealer_DropdownFil
     {
         global $wpdb;
         $sql = 'select distinct(meta_value) FROM ' . $wpdb->prefix.'postmeta WHERE meta_key=%s ORDER BY meta_value';
-        $sql = $wpdb->prepare($sql);
+        $sql = $wpdb->prepare($sql, $meta_key);
 
         return $wpdb->get_col($sql);
     }
