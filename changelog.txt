@@ -1,3 +1,7 @@
+1.1.6 - 6/5/2020
+----------------
++ Added checks to verify full address is returned before populating admin fields
+
 1.1.5 - 6/4/2020
 ----------------
 + Address fields can now be exposed by using the EFFDF_ENABLE_EXTENDED_ADDRESS_FIELDS filter
