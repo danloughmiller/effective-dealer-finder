@@ -19,23 +19,28 @@ function setupLocationField(input)
             var place = this.getPlace();
             console.log(place);
             var add = placeToAddress(place);
-            jQuery('#dealer_address').val(add.StreetNumber.long_name + ' ' + add.StreetName.long_name);
-            jQuery('#dealer_address2').val('');
-            jQuery('#dealer_city').val(add.City.long_name);
-            jQuery('#dealer_state').val(add.State.long_name);
-            jQuery('#dealer_postal_code').val(add.Zip.long_name);
-            jQuery('#dealer_country').val(add.Country.long_name);
-            jQuery('#dealer_place_id').val(place.place_id);
-            console.log(add);
-            
-            var formatted_address = place.formatted_address;
-            jQuery('#dealer_location').val(formatted_address);
 
             var lat = place.geometry.location.lat();
             var lng = place.geometry.location.lng();
             
             jQuery('#dealer_latitude').val(lat);
             jQuery('#dealer_longitude').val(lng);
+
+            if (add.StreetNumber && add.StreetName)
+                jQuery('#dealer_address').val(add.StreetNumber.long_name + ' ' + add.StreetName.long_name);
+
+            jQuery('#dealer_address2').val('');
+            if (add.City) jQuery('#dealer_city').val(add.City.long_name);
+            if (add.State) jQuery('#dealer_state').val(add.State.long_name);
+            if (add.Zip) jQuery('#dealer_postal_code').val(add.Zip.long_name);
+            if (add.Country) jQuery('#dealer_country').val(add.Country.long_name);
+            jQuery('#dealer_place_id').val(place.place_id);
+            console.log(add);
+            
+            var formatted_address = place.formatted_address;
+            jQuery('#dealer_location').val(formatted_address);
+
+            
 
             var phone = place.formatted_phone_number;
             if (phone) {
