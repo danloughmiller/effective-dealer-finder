@@ -18,6 +18,7 @@ add_action('admin_enqueue_scripts', function() {
         plugins_url() .'/effective-dealer-finder/assets/js/effdf-admin.js',
         array('effdf-lib-js')   
     );
+
 });
 
 

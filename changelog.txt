@@ -1,3 +1,8 @@
+1.1.7 - 6/6/2020
+----------------
++ Minor cleaning of JS
++ Added EffectiveDealer_UserMyLocation_IP_Filter
+
 1.1.6 - 6/5/2020
 ----------------
 + Added checks to verify full address is returned before populating admin fields

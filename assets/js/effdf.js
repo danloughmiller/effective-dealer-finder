@@ -21,9 +21,6 @@ function init_effdf_public() {
  
 		effdf_setMarkerData(dealer_data.dealers);
 		
-
-		//var markerCluster = new MarkerClusterer(map, markers,
-        //    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'}); 
         jQuery('.effective-dealer-search-filter input.effdf_location_search').each(function() {
             var autocomplete = new google.maps.places.Autocomplete(this);
             autocomplete.setFields(['formatted_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
@@ -41,8 +38,7 @@ function init_effdf_public() {
                             var lat = loc.lat();
                             var lng = loc.lng();
 
-                            jQuery('input.ds-lat').val(lat);
-                            jQuery('input.ds-lng').val(lng);
+                            effdf_setlatlng(lat, lng)
                             effdf_runDealerSearch()
                         } else {
                             
@@ -55,21 +51,41 @@ function init_effdf_public() {
                 var lat = place.geometry.location.lat();
                 var lng = place.geometry.location.lng();
 
-                jQuery('input.ds-lat').val(lat);
-                jQuery('input.ds-lng').val(lng);
-                effdf_runDealerSearch()
+                effdf_setlatlng(lat, lng);
+                effdf_runDealerSearch();
                 
                 return false; 
                 
             });
         });
     }
-    
-    
 
+    jQuery('.effective-dealer-use-my-location-ip-filter').on('click', function(e) {
+        e.preventDefault();
+        jQuery.ajax({
+            type: 'post',
+            dataType: 'json',
+            url : dealer_data.ajax_url,
+            data: {
+                'action': 'edealer_get_ip_location',
+            },
+            success: function(response)
+            {
+                effdf_setlatlng(response.lat, response.lng);
+                jQuery('input.effdf_location_search').val(response.location);
+                effdf_runDealerSearch();
+            }
+        });
+        return false;
+    });
 }
 
 
+function effdf_setlatlng(lat, lng)
+{
+    jQuery('input.ds-lat').val(lat);
+    jQuery('input.ds-lng').val(lng);
+}
 
 function effdf_runDealerSearch() 
 {
