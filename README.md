@@ -1,6 +1,6 @@
 # effective-dealer-finder
 
-
+```
 <?php
 
 add_filter('EFFDF_GOOGLE_API_KEY', function($e) { return '{key}';});
@@ -63,3 +63,4 @@ function add_dealer_finder()
         return $dealer_finder->render();
     }
 }
+```
