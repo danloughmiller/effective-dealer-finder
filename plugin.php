@@ -37,5 +37,6 @@ require_once('inc/elements/edealer-elements.php');
 require_once('inc/elements/edealer-post-element.php');
 require_once('inc/elements/edealer-default-post-element.php');
 
+require_once('inc/admin.php');
 
 
