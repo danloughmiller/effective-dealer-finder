@@ -110,6 +110,14 @@ abstract class EffectiveDealer_Filter
 	{
 		
 	}
+
+	function getFilterArgs()
+	{
+		if (!empty($args = $_GET['edealer_filter']))
+			return $args;
+
+		return array();
+	}
 	
 	protected function getClasses($additional = array())
 	{

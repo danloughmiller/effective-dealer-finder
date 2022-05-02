@@ -131,7 +131,7 @@ function effdf_setMarkerData(data)
             position: dealer.location,
             map: map
         };
-        console.log('icon: ' + dealer.icon);
+        //console.log('icon: ' + dealer.icon);
         if (dealer.icon != undefined && dealer.icon != '') {
             var icon = {
                 url: dealer.icon,
@@ -147,7 +147,11 @@ function effdf_setMarkerData(data)
             };            
         }
 
-        console.log(mdata);
+        if (typeof effdf_marker_before === 'function') {
+            mdata = effdf_marker_before(map, dealer, mdata);
+        }
+
+        //console.log(mdata);
 
         var marker = new google.maps.Marker(mdata);
 
@@ -159,6 +163,10 @@ function effdf_setMarkerData(data)
                 infowindow.open(map, marker); 
             }
         })(marker,i));
+
+        if (typeof effdf_marker_after === 'function') {
+            effdf_marker_after(map, dealer, mdata, marker);
+        }
 	  
 	  return marker;
 	});

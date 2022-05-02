@@ -1,3 +1,9 @@
+1.2.0
+-----
++ Added 'links' style filter to show items in a link instead of a dropdown
++ Added term links filter to populate links filter with terms
++ Added ability to add pre/post handling functions for map markers
+
 1.1.7 - 6/6/2020
 ----------------
 + Minor cleaning of JS

@@ -3,7 +3,7 @@
 Plugin Name: Effective Dealer Finder
 Plugin URI: 
 Description: 
-Version: 1.1.5
+Version: 1.2.0
 Author: Daniel Loughmiller / EffectWebAgency
 Author URI: 
 Text Domain: 
@@ -31,6 +31,8 @@ require_once('inc/filters/edealer-termsfilter.php');
 require_once('inc/filters/edealer-radiusfilter.php');
 require_once('inc/filters/edealer-meta-value-dropdown.filter.php');
 require_once('inc/filters/edealer-usemylocation.ip.class.php');
+require_once('inc/filters/edealer-linksfilter.php');
+require_once('inc/filters/edealer-termlinksfilter.php');
 
 // Elements
 require_once('inc/elements/edealer-elements.php');
