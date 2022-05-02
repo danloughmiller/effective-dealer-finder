@@ -4,29 +4,30 @@ DEFINE('EDEALER_FILTER_PREFIX', 'egrid-');
 class EffectiveDealer_Filters
 {
     public $filters = array();
-    public $labels = array(
+    public $options = array(
         'reset_filters' => 'Reset Filters',
         'update_filters' => 'Update Filters',
+		'ajax'=>false
     );
 
-    function __construct($labels = array())
+    function __construct($options = array())
     {
-        if (!empty($labels))
-            $this->labels = array_merge($this->labels, $labels);
+        if (!empty($options))
+            $this->options = array_merge($this->options, $options);
     }
 
     public function setLabel($labelKey, $value){
         if ($value===false) {
-            unset($this->labels[$labelKey]);
+            unset($this->options[$labelKey]);
         } else {
-            $this->labels[$labelKey]=$value;
+            $this->options[$labelKey]=$value;
         }
     }
     
     protected function _($labelKey, $default=false)
     {
-        if (array_key_exists($labelKey, $this->labels )) {
-            $val = apply_filters('EFFECTIVE_DEALERS_LABEL_FILTER', $this->labels[$labelKey], $labelKey, $this);
+        if (array_key_exists($labelKey, $this->options )) {
+            $val = apply_filters('EFFECTIVE_DEALERS_LABEL_FILTER', $this->options[$labelKey], $labelKey, $this);
             $val =  apply_filters('EFFECTIVE_DEALERS_FILTER_LABEL_FILTER', $val, $labelKey, $this);
             return $val;
         }
@@ -66,6 +67,8 @@ class EffectiveDealer_Filters
 		if (!empty(self::_('reset_filters')))
 			$ret .= '	<a class="edealers-button edealers-button-reset-filter" href="' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) . '">' . self::_('reset_filters') . '</a>';
 		
+		$ret .= '<div class="edf-loader-container"><div class="edf-loader">Loading...</div></div>';
+
 			$ret .= '</div>';
 		$ret .= '</form></div>';
 		
@@ -113,8 +116,8 @@ abstract class EffectiveDealer_Filter
 
 	function getFilterArgs()
 	{
-		if (!empty($args = $_GET['edealer_filter']))
-			return $args;
+		if (!empty($_GET['edealer_filter']))
+			return $_GET['edealer_filter'];
 
 		return array();
 	}

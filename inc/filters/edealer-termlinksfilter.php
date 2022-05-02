@@ -3,11 +3,10 @@
 class EffeciveDealer_TermLinksFilter extends EffectiveDealer_LinksFilter {
 
     public $taxonomy = '';
-	public $selected = '';
 	
 	public function __construct($id, $title, $taxonomy=false, $selected='', $placeholder=false)
 	{
-		parent::__construct($id, $title);
+		parent::__construct($id, $title, $selected);
 		
 		if ($taxonomy) {
 			$this->taxonomy = $taxonomy;
@@ -20,7 +19,7 @@ class EffeciveDealer_TermLinksFilter extends EffectiveDealer_LinksFilter {
 
 			if (!empty($placeholder))
 			{
-				$this->addLink(false, $placeholder, empty($selected));
+				$this->addLink(false, $placeholder, '', empty($selected));
 			}
 
             if (!is_wp_error($terms)) {
@@ -31,7 +30,7 @@ class EffeciveDealer_TermLinksFilter extends EffectiveDealer_LinksFilter {
 						$args[$this->taxonomy] = $t->slug;
 						$filters = array('edealer_filter'=>$args);
 						$query = http_build_query($filters);
-                        $this->addLink('?'.$query, $t->name, $t->slug==$selected);
+                        $this->addLink('?'.$query, $t->name, $t->slug, $t->slug==$selected);
                     }
                 }
             }
@@ -39,7 +38,7 @@ class EffeciveDealer_TermLinksFilter extends EffectiveDealer_LinksFilter {
     }
     
 	
-	function getFilterName()
+	function getFieldName()
 	{
 		return 'edealer_filter[' . $this->taxonomy . ']';
 	}

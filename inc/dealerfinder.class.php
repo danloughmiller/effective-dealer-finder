@@ -1,6 +1,4 @@
 <?php
-
-
 class EffectiveDealerFinder
 {
     public $dealer_finder_id = '';
@@ -15,6 +13,9 @@ class EffectiveDealerFinder
 
     /* Elements */
     public $elements = array();
+
+    /** @var bool $ajax If set to true the map will attempt to reload map data using ajax instead of page reloads */
+    public $ajax = false;
     
     /* Paging */
     public $paged = true;
@@ -67,10 +68,19 @@ class EffectiveDealerFinder
     {
         $map_data = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'dealer_finder_id' => $this->dealer_finder_id,
             'dealers' => $this->getElementMarkers()
         );
 
         return $map_data;
+    }
+
+    function getAjaxResponse()
+    {
+        $data = $this->getMapData();
+        $data['elements'] = $this->renderElements();
+        
+        return $data;
     }
 
     public function render($html=false)
@@ -206,6 +216,9 @@ class EffectiveDealerFinder
 		
 		if (is_string($additional))
 			$additional = array($additional);
+
+        if ($this->ajax)
+            $additional[] = 'edf-ajax-enable';
 		
 		return array_merge(array('effective-dealer-finder'), $additional);
 	}

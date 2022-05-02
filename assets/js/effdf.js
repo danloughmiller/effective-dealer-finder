@@ -2,6 +2,7 @@ var effdf_map;
 var markerData = [];
 var markers = [];
 var infowindow=false;
+var effdf_hold_update = false;
 
 function init_effdf_public() {
 
@@ -13,11 +14,21 @@ function init_effdf_public() {
         mapEl = mapEl[0];
 		effdf_map = new google.maps.Map(mapEl, { 
           zoom: 3,
+          maxZoom:9,
 		  center: {lat: 0, lng: 1 }
         });
 
         //Setup infowindow
         infowindow = new google.maps.InfoWindow({content:"", maxWidth: 350});
+/*
+        effdf_map.addListener('center_changed', function() {
+            if (effdf_hold_update) return;
+
+            var center = effdf_map.getCenter();
+            effdf_setlatlng(center.lat(), center.lng());
+            effdf_runAjaxUpdate();
+        });
+*/
  
 		effdf_setMarkerData(dealer_data.dealers);
 		
@@ -39,7 +50,7 @@ function init_effdf_public() {
                             var lng = loc.lng();
 
                             effdf_setlatlng(lat, lng)
-                            effdf_runDealerSearch()
+                            effdf_runAjaxUpdate();
                         } else {
                             
                         }
@@ -52,7 +63,7 @@ function init_effdf_public() {
                 var lng = place.geometry.location.lng();
 
                 effdf_setlatlng(lat, lng);
-                effdf_runDealerSearch();
+                effdf_runAjaxUpdate();
                 
                 return false; 
                 
@@ -73,20 +84,74 @@ function init_effdf_public() {
             {
                 effdf_setlatlng(response.lat, response.lng);
                 jQuery('input.effdf_location_search').val(response.location);
-                effdf_runDealerSearch();
+                effdf_runAjaxUpdate();
             }
         });
         return false;
     });
+
+    jQuery('.edf-ajax-enable .effective-grid-dropdown-filter').on('change', function() {
+        effdf_runAjaxUpdate();
+    });
+
+    jQuery('.edf-ajax-enable .effective-dealer-links-filter a').on('click', function(e) {
+        e.preventDefault();
+
+        val = jQuery(this).data('value');
+        var filter = jQuery(this).parents('.effective-dealer-links-filter');
+        var el = jQuery(filter).find('input[type=hidden]');
+        el.val(val);
+
+        jQuery(filter).find('.edealer-active-link').removeClass('edealer-active-link');
+        jQuery(this).addClass('edealer-active-link');
+
+        effdf_runAjaxUpdate();
+
+    });
 }
 
 
+/**
+ * Retrieves an updated list of markers and shop results
+ * 
+ * @param {*} lat 
+ * @param {*} lng 
+ */
 function effdf_setlatlng(lat, lng)
 {
     jQuery('input.ds-lat').val(lat);
     jQuery('input.ds-lng').val(lng);
 }
 
+function effdf_runAjaxUpdate() 
+{
+    effdf_hold_update=true;
+    jQuery('.edf-loader').show();
+
+		var data = {
+			'action': 'edf_ajax_update',
+            'dealer_finder_id': dealer_data.dealer_finder_id
+        };
+        
+        //Assemble current filter data
+        jQuery('.effective-dealers-filters *[name]').each(function() {
+            data[jQuery(this).attr('name')] = jQuery(this).val();
+        });
+
+        console.log(data);
+		
+		jQuery('.effective-dealer-elements-container').html('<div class="dealer-spinner"></div>');
+
+		jQuery.get(dealer_data.ajax_url, data, function(response) {
+            var ul = jQuery('ul', response.elements);
+			jQuery('.effective-dealer-elements-container').html(ul);
+			effdf_setMarkerData(response.dealers);
+            jQuery('.edf-loader').hide();
+            effdf_hold_update=false;
+		}, 'json'); 
+} 
+
+/*
 function effdf_runDealerSearch() 
 {
 	jQuery(document).ready(function($) {
@@ -113,6 +178,7 @@ function effdf_runDealerSearch()
 		}, 'json'); 
 	});
 } 
+*/
 
 function effdf_setMarkerData(data) 
 {
@@ -123,6 +189,10 @@ function effdf_setMarkerData(data)
 	for(i=0; i<markers.length; i++){
 		markers[i].setMap(null);
 	}
+    markers = [];
+    if (typeof effdf_marker_clear === 'function') {
+        mdata = effdf_marker_clear();
+    }
 	
 	var bounds = new google.maps.LatLngBounds();
 	
@@ -150,8 +220,6 @@ function effdf_setMarkerData(data)
         if (typeof effdf_marker_before === 'function') {
             mdata = effdf_marker_before(map, dealer, mdata);
         }
-
-        //console.log(mdata);
 
         var marker = new google.maps.Marker(mdata);
 

@@ -24,9 +24,9 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
 
     protected function renderElement()
     {
-        $html = '<input class="effdf_location_search" placeholder="'. $this->placeholder . '" name="edealer_filters[location][ds]" type="text" value="' . $this->currentValue . '" />';
-        $html .= '<input class="ds-lat" name="edealer_filters[location][lat]" type="hidden" value="' . $this->currentLat . '" />';
-        $html .= '<input class="ds-lng" name="edealer_filters[location][lng]" type="hidden" value="' . $this->currentLng . '" />';
+        $html = '<input class="effdf_location_search" placeholder="'. $this->placeholder . '" name="edealer_filter[location][ds]" type="text" value="' . $this->currentValue . '" />';
+        $html .= '<input class="ds-lat" name="edealer_filter[location][lat]" type="hidden" value="' . $this->currentLat . '" />';
+        $html .= '<input class="ds-lng" name="edealer_filter[location][lng]" type="hidden" value="' . $this->currentLng . '" />';
         return $html;
     }
 
