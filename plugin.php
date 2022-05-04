@@ -33,6 +33,8 @@ require_once('inc/filters/edealer-meta-value-dropdown.filter.php');
 require_once('inc/filters/edealer-usemylocation.ip.class.php');
 require_once('inc/filters/edealer-linksfilter.php');
 require_once('inc/filters/edealer-termlinksfilter.php');
+require_once('inc/filters/edealer-checklistfilter.php');
+require_once('inc/filters/edealer-termcheckboxfilter.php');
 
 // Elements
 require_once('inc/elements/edealer-elements.php');

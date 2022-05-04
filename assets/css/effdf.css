@@ -82,3 +82,12 @@
     height: 5em;
   }
 }
+.effective-dealers-checklist-filter li label {
+  display: flex;
+}
+.effective-dealers-checklist-filter li label input {
+  flex: 0 0 min-content;
+}
+.effective-dealers-checklist-filter li label span {
+  flex: 1 1 100%;
+}

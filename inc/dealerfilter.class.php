@@ -116,7 +116,7 @@ abstract class EffectiveDealer_Filter
 
 	function getFilterArgs()
 	{
-		if (!empty($_GET['edealer_filter']))
+		if (array_key_exists('edealer_filter', $_GET) && !empty($_GET['edealer_filter']))
 			return $_GET['edealer_filter'];
 
 		return array();

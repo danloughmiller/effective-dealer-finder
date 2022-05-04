@@ -71,6 +71,26 @@ function init_effdf_public() {
         });
     }
 
+    jQuery('.effective-dealers-checklist-filter input[type=checkbox]').on('change', function(e) {
+        if (jQuery(this).is(':checked')) {
+            var val = jQuery(this).val();
+            if (val=='')
+            {
+                var ul = jQuery(this).parents('ul');
+                ul.find('input[type=checkbox]').each(function() {
+                    if (jQuery(this).val() != val) {
+                        jQuery(this).removeAttr('checked');
+                    }
+                });
+            } else {
+                jQuery(this).parents('ul').find('input[value=""]').removeAttr('checked');
+            }
+        } else {
+
+        }
+    });
+
+
     jQuery('.effective-dealer-use-my-location-ip-filter').on('click', function(e) {
         e.preventDefault();
         jQuery.ajax({
@@ -91,6 +111,10 @@ function init_effdf_public() {
     });
 
     jQuery('.edf-ajax-enable .effective-grid-dropdown-filter').on('change', function() {
+        effdf_runAjaxUpdate();
+    });
+
+    jQuery('.edf-ajax-enable .effective-dealers-checklist-filter input[type=checkbox]').on('change', function() {
         effdf_runAjaxUpdate();
     });
 
@@ -134,8 +158,19 @@ function effdf_runAjaxUpdate()
         };
         
         //Assemble current filter data
-        jQuery('.effective-dealers-filters *[name]').each(function() {
+        jQuery('.effective-dealers-filters *[name][type!=checkbox]').each(function() {
             data[jQuery(this).attr('name')] = jQuery(this).val();
+        });
+
+        jQuery('.effective-dealers-filters *[name][type=checkbox]:checked').each(function() {
+            var name = jQuery(this).attr('name');
+            
+            if (name in data) {
+                data[jQuery(this).attr('name')] += "|" + jQuery(this).val();
+            } else {
+                data[jQuery(this).attr('name')] = jQuery(this).val();
+            }
+            
         });
 
         console.log(data);
