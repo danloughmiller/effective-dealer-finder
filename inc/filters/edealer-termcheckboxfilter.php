@@ -54,10 +54,9 @@ class EffeciveDealer_TermsCheckboxFilter extends EffectiveDealer_ChecklistFilter
 	
 	function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
-		//var_dump($this->selected);
-		//exit;
-		if (!empty($this->selected)) {
-			$values = explode('|', $this->selected);
+		$values = array_filter($this->selected, fn($x) => !empty($x));
+
+		if (!empty($values)) {
 			$tax_query[] = array(
 				'taxonomy'=>$this->taxonomy,
 				'field'=>'slug',

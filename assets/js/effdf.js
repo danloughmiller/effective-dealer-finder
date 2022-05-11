@@ -1,3 +1,11 @@
+//effdf_marker_click(marker, i) occurs when a marker is clicked
+//effdf_marker_clear called when map data is cleared
+//effdf_marker_before(map, dealer, mdata) called before a marker is created
+//effdf_marker_after(map, dealer, mdata, marker) called after the marker is created
+//effdf_map_before_setup(mapParams, mapEl) called before map setup
+//effdf_map_after_setup(effdf_map) called after map setup
+//effdf_markers_after(map, markers) called after markers added
+
 var effdf_map;
 var markerData = [];
 var markers = [];
@@ -12,11 +20,23 @@ function init_effdf_public() {
 	if (jQuery(mapEl).length>0) {
         
         mapEl = mapEl[0];
-		effdf_map = new google.maps.Map(mapEl, { 
-          zoom: 3,
-          maxZoom:9,
-		  center: {lat: 0, lng: 1 }
-        });
+        var mapParams = { 
+            zoom: 3,
+            maxZoom:9,
+            center: {lat: 0, lng: 1 }
+        };
+
+        if (typeof effdf_map_before_setup === 'function') {
+            mapParams = effdf_map_before_setup(mapParams, mapEl);
+        }
+
+		effdf_map = new google.maps.Map(mapEl, mapParams);
+
+        if (typeof effdf_map_after_setup === 'function') {
+            effdf_map_after_setup(effdf_map);
+        }
+        
+        
 
         //Setup infowindow
         infowindow = new google.maps.InfoWindow({content:"", maxWidth: 350});
@@ -86,8 +106,18 @@ function init_effdf_public() {
                 jQuery(this).parents('ul').find('input[value=""]').removeAttr('checked');
             }
         } else {
+            var ul = jQuery(this).parents('ul');
 
+            if (jQuery(ul).find(':checked').length==0) {
+                var empty_el = jQuery(ul).find('input[type=checkbox][value=""]');
+                jQuery(empty_el).prop('checked', true);
+            }
         }
+
+        jQuery('.effective-dealers-checklist-filter li.effds-filter-active').removeClass('effds-filter-active');
+        jQuery('.effective-dealers-checklist-filter input:checked').each(function() {
+            jQuery(this).parents('li').addClass('effds-filter-active');
+        });
     });
 
 
@@ -234,7 +264,8 @@ function effdf_setMarkerData(data)
 	markers = data.map(function(dealer, i) { 
         var mdata = { 
             position: dealer.location,
-            map: map
+            map: map,
+            element_id: dealer.id
         };
         //console.log('icon: ' + dealer.icon);
         if (dealer.icon != undefined && dealer.icon != '') {
@@ -262,6 +293,9 @@ function effdf_setMarkerData(data)
 
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
+                if (typeof effdf_marker_click === 'function') {
+                    mdata = effdf_marker_click(marker, i);
+                }
                 infowindow.setContent(markerData[i].infoWindowHtml);
                 infowindow.open(map, marker); 
             }
@@ -273,6 +307,21 @@ function effdf_setMarkerData(data)
 	  
 	  return marker;
 	});
-	
+
+    if (typeof effdf_markers_after === 'function') {
+        effdf_markers_after(map, markers);
+    }
+
+    //effdf_fit_to_bounds();	
 	map.fitBounds(bounds);
+}
+
+function effdf_fit_to_bounds()
+{
+    var bounds = new google.maps.LatLngBounds();
+    for(i=0;i<markers.length;i++)
+    {
+        bounds.extend(markers[i].position);
+    }
+    effdf_map.fitBounds(bounds);
 }

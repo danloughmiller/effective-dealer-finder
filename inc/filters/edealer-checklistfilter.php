@@ -3,15 +3,18 @@
 abstract class EffectiveDealer_ChecklistFilter extends EffectiveDealer_Filter
 {
     public $options = array();
-	public $selected = '';
+
+	/** @var string[] $selected */
+	public $selected = array();
 	
 	public $_renderSelect2 = false;
 	
-	public function __construct($id, $title, $placeholder='', $options=array(), $selected='')
+	public function __construct($id, $title, $placeholder='', $options=array(), $selected)
 	{
 		parent::__construct($id, $title, $placeholder);
+		
 		$this->options = $options;
-		$this->selected = $selected;
+		$this->selected = explode('|', $selected);
 	}
 	
 	protected function getFieldName() { }
@@ -40,7 +43,7 @@ abstract class EffectiveDealer_ChecklistFilter extends EffectiveDealer_Filter
 	
 	protected function renderOption($key, $label, $data=false)
 	{
-		return '<li><label><span>' . $label . '</span><input name="' . $this->getFieldName() .'" type="checkbox" value="'.$key.'"></label></li>';
+		return '<li class="' . (in_array($key, $this->selected)?'effds-filter-active':'') . '"><label><span>' . $label . '</span><input name="' . $this->getFieldName() .'" type="checkbox" ' . (in_array($key, $this->selected)?'checked':'') . ' value="'.$key.'"></label></li>';
 	}
 	
 	protected function getClasses($additional = array())
