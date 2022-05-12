@@ -24,7 +24,7 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
 
     protected function renderElement()
     {
-        $html = '<input class="effdf_location_search" placeholder="'. $this->placeholder . '" name="edealer_filter[location][ds]" type="text" value="' . $this->currentValue . '" />';
+        $html = '<input class="effdf_location_search" disabled placeholder="'. $this->placeholder . '" name="edealer_filter[location][ds]" type="text" value="' . $this->currentValue . '" />';
         $html .= '<input class="ds-lat" name="edealer_filter[location][lat]" type="hidden" value="' . $this->currentLat . '" />';
         $html .= '<input class="ds-lng" name="edealer_filter[location][lng]" type="hidden" value="' . $this->currentLng . '" />';
         return $html;
@@ -40,6 +40,9 @@ class EffectiveDealer_LocationFilter extends EffectiveDealer_Filter
     
     function constructQuery(&$args, &$tax_query, &$meta_query)
 	{
+        if (empty($this->currentLat) || empty($this->currentLng))
+            return $args;
+
         if (!empty($this->currentLat) && !empty($this->currentLng)) {
             $nearby_ids = $this->getDealersByLatLng(
                 $args['post_type'],

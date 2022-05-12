@@ -1,3 +1,8 @@
+2.0.0
+-----
++ New filter types added for new site
++ Table columns added to dealers list
+
 1.2.0
 -----
 + Added 'links' style filter to show items in a link instead of a dropdown

@@ -83,10 +83,31 @@ function init_effdf_public() {
                 var lng = place.geometry.location.lng();
 
                 effdf_setlatlng(lat, lng);
+
+                console.log(lat);
+                console.log(lng);
+
                 effdf_runAjaxUpdate();
                 
                 return false; 
                 
+            });
+            
+            jQuery(this).removeAttr('disabled');
+/*
+            jQuery(this).on('change', function() {
+                if (jQuery(this).val()=='') {
+                    effdf_setlatlng('','');
+                    effdf_runAjaxUpdate();
+                }
+            });
+            */
+
+            jQuery(this).on('keyup', function() {
+                if (jQuery(this).val()=='') {
+                    effdf_setlatlng('', '');
+                    effdf_runAjaxUpdate();
+                }
             });
         });
     }
@@ -189,7 +210,8 @@ function effdf_runAjaxUpdate()
         
         //Assemble current filter data
         jQuery('.effective-dealers-filters *[name][type!=checkbox]').each(function() {
-            data[jQuery(this).attr('name')] = jQuery(this).val();
+            if (jQuery(this).val() != '')
+                data[jQuery(this).attr('name')] = jQuery(this).val();
         });
 
         jQuery('.effective-dealers-filters *[name][type=checkbox]:checked').each(function() {
@@ -307,13 +329,12 @@ function effdf_setMarkerData(data)
 	  
 	  return marker;
 	});
+    //effdf_fit_to_bounds();	
+	map.fitBounds(bounds, 50);
 
     if (typeof effdf_markers_after === 'function') {
         effdf_markers_after(map, markers);
     }
-
-    //effdf_fit_to_bounds();	
-	map.fitBounds(bounds);
 }
 
 function effdf_fit_to_bounds()
@@ -323,5 +344,5 @@ function effdf_fit_to_bounds()
     {
         bounds.extend(markers[i].position);
     }
-    effdf_map.fitBounds(bounds);
+    effdf_map.fitBounds(bounds, 50);
 }
