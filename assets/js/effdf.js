@@ -329,8 +329,16 @@ function effdf_setMarkerData(data)
 	  
 	  return marker;
 	});
-    //effdf_fit_to_bounds();	
-	map.fitBounds(bounds, 50);
+
+    if (typeof effdf_markers_after === 'function') {
+        effdf_markers_after(map, markers);
+    }
+
+    if (typeof effdf_bounds_before === 'function') {
+        bounds = effdf_bounds_before(bounds, map, data, markers);
+    }
+
+	map.fitBounds(bounds);
 
     if (typeof effdf_markers_after === 'function') {
         effdf_markers_after(map, markers);
@@ -344,5 +352,10 @@ function effdf_fit_to_bounds()
     {
         bounds.extend(markers[i].position);
     }
+
+    if (typeof effdf_bounds_before === 'function') {
+        bounds = effdf_bounds_before(bounds, map, markers);
+    }
+
     effdf_map.fitBounds(bounds, 50);
 }
