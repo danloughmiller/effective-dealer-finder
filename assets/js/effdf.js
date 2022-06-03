@@ -284,6 +284,7 @@ function effdf_setMarkerData(data)
 	var bounds = new google.maps.LatLngBounds();
 	
 	markers = data.map(function(dealer, i) { 
+        
         var mdata = { 
             position: dealer.location,
             map: map,
@@ -301,7 +302,8 @@ function effdf_setMarkerData(data)
              mdata = { 
                 position: dealer.location,
                 map: map,
-                icon: icon
+                icon: icon,
+                element_id: dealer.id
             };            
         }
 
@@ -340,8 +342,8 @@ function effdf_setMarkerData(data)
 
 	map.fitBounds(bounds);
 
-    if (typeof effdf_markers_after === 'function') {
-        effdf_markers_after(map, markers);
+    if (typeof effdf_bounds_after === 'function') {
+        effdf_bounds_after(bounds, map, data, markers);
     }
 }
 
