@@ -1,5 +1,7 @@
 # effective-dealer-finder
 
+A programmer focused dealer finder for Wordpress
+
 ```
 <?php
 
