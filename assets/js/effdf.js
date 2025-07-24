@@ -53,63 +53,61 @@ function init_effdf_public() {
 		effdf_setMarkerData(dealer_data.dealers);
 		
         jQuery('.effective-dealer-search-filter input.effdf_location_search').each(function() {
-            var autocomplete = new google.maps.places.Autocomplete(this);
-            autocomplete.setFields(['formatted_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
+    var input = this; // Fix: Store reference to input element
+    var autocomplete = new google.maps.places.Autocomplete(this);
+    autocomplete.setFields(['formatted_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
 
-            autocomplete.addListener('place_changed', function() {
-                var place = this.getPlace();
-                if (!place || !place.geometry) {
-                    // User entered the name of a Place that was not suggested and
-                    // pressed the Enter key, or the Place Details request failed.
-                    var geocoder = new google.maps.Geocoder();
-                    var address = jQuery(input).val();
-                    geocoder.geocode({'address': address}, function(results, status) {
-                        if (status === 'OK') {
-                            var loc = results[0].geometry.location;
-                            var lat = loc.lat();
-                            var lng = loc.lng();
-
-                            effdf_setlatlng(lat, lng)
-                            effdf_runAjaxUpdate();
-                        } else {
-                            
-                        }
-                    });	
-                    
-                    return false;
-                }
-
-                var lat = place.geometry.location.lat();
-                var lng = place.geometry.location.lng();
-
-                effdf_setlatlng(lat, lng);
-
-                console.log(lat);
-                console.log(lng);
-
-                effdf_runAjaxUpdate();
-                
-                return false; 
-                
-            });
+    autocomplete.addListener('place_changed', function() {
+        var place = this.getPlace();
+        if (!place || !place.geometry) {
+            var geocoder = new google.maps.Geocoder();
+            var address = jQuery(input).val(); // Fix: Use stored input reference
             
-            jQuery(this).removeAttr('disabled');
-/*
-            jQuery(this).on('change', function() {
-                if (jQuery(this).val()=='') {
-                    effdf_setlatlng('','');
+            if (address.trim() === '') return false;
+            
+            geocoder.geocode({'address': address}, function(results, status) {
+                if (status === 'OK' && results.length > 0) {
+                    var loc = results[0].geometry.location;
+                    var lat = loc.lat();
+                    var lng = loc.lng();
+                    
+                    // Update input with formatted address
+                    jQuery(input).val(results[0].formatted_address);
+                    
+                    effdf_setlatlng(lat, lng);
                     effdf_runAjaxUpdate();
+                } else {
+                    // Clear invalid input
+                    jQuery(input).val('');
+                    // Optional: Show user feedback
+                    console.log('Location not found: ' + address);
                 }
             });
-            */
+            return false;
+        }
 
-            jQuery(this).on('keyup', function() {
-                if (jQuery(this).val()=='') {
-                    effdf_setlatlng('', '');
-                    effdf_runAjaxUpdate();
-                }
-            });
-        });
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+
+        effdf_setlatlng(lat, lng);
+
+        console.log(lat);
+        console.log(lng);
+
+        effdf_runAjaxUpdate();
+        
+        return false; 
+    });
+    
+    jQuery(this).removeAttr('disabled');
+
+    jQuery(this).on('keyup', function() {
+        if (jQuery(this).val()=='') {
+            effdf_setlatlng('', '');
+            effdf_runAjaxUpdate();
+        }
+    });
+});
     }
 
     jQuery('.effective-dealers-checklist-filter input[type=checkbox]').on('change', function(e) {
