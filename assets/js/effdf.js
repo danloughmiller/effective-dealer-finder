@@ -53,61 +53,84 @@ function init_effdf_public() {
 		effdf_setMarkerData(dealer_data.dealers);
 		
         jQuery('.effective-dealer-search-filter input.effdf_location_search').each(function() {
-    var input = this; // Fix: Store reference to input element
-    var autocomplete = new google.maps.places.Autocomplete(this);
-    autocomplete.setFields(['formatted_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
+            var input = this;
+            var autocomplete = new google.maps.places.Autocomplete(this);
+            autocomplete.setFields(['formatted_address', 'geometry', 'icon', 'name', 'formatted_phone_number', 'website']);
 
-    autocomplete.addListener('place_changed', function() {
-        var place = this.getPlace();
-        if (!place || !place.geometry) {
-            var geocoder = new google.maps.Geocoder();
-            var address = jQuery(input).val(); // Fix: Use stored input reference
+            autocomplete.addListener('place_changed', function() {
+                var place = this.getPlace();
+                if (!place || !place.geometry) {
+                    console.log('No place selected or no geometry');
+                    return false;
+                }
+
+                var lat = place.geometry.location.lat();
+                var lng = place.geometry.location.lng();
+                var formattedAddress = place.formatted_address;
+
+                // Update the visible input value
+                jQuery(input).val(formattedAddress);
+                
+                // Set the hidden lat/lng fields  
+                jQuery('input[name="edealer_filter[location][lat]"]').val(lat);
+                jQuery('input[name="edealer_filter[location][lng]"]').val(lng);
+                
+                console.log('Place selected:', formattedAddress, lat, lng);
+                effdf_runAjaxUpdate();
+                
+                return false; 
+            });
             
-            if (address.trim() === '') return false;
-            
-            geocoder.geocode({'address': address}, function(results, status) {
-                if (status === 'OK' && results.length > 0) {
-                    var loc = results[0].geometry.location;
-                    var lat = loc.lat();
-                    var lng = loc.lng();
+            jQuery(this).removeAttr('disabled');
+
+            // Handle Enter key to auto-select first place prediction
+            jQuery(this).on('keydown', function(e) {
+                if (e.keyCode === 13) { // Enter key
+                    e.preventDefault();
                     
-                    // Update input with formatted address
-                    jQuery(input).val(results[0].formatted_address);
+                    var currentVal = jQuery(this).val().trim();
+                    if (currentVal === '') return false;
                     
-                    effdf_setlatlng(lat, lng);
-                    effdf_runAjaxUpdate();
-                } else {
-                    // Clear invalid input
-                    jQuery(input).val('');
-                    // Optional: Show user feedback
-                    console.log('Location not found: ' + address);
+                    // Use Places API to search for the location
+                    var service = new google.maps.places.PlacesService(effdf_map);
+                    var request = {
+                        query: currentVal,
+                        fields: ['formatted_address', 'geometry', 'name']
+                    };
+                    
+                    service.findPlaceFromQuery(request, function(results, status) {
+                        if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+                            var place = results[0];
+                            var lat = place.geometry.location.lat();
+                            var lng = place.geometry.location.lng();
+                            var formattedAddress = place.formatted_address;
+
+                            // Update the visible input value
+                            jQuery(input).val(formattedAddress);
+                            
+                            // Set the hidden lat/lng fields
+                            jQuery('input[name="edealer_filter[location][lat]"]').val(lat);
+                            jQuery('input[name="edealer_filter[location][lng]"]').val(lng);
+                            
+                            console.log('Found place via search:', formattedAddress, lat, lng);
+                            effdf_runAjaxUpdate();
+                        } else {
+                            console.log('No place found for:', currentVal);
+                            jQuery(input).val('');
+                        }
+                    });
+                    
+                    return false;
                 }
             });
-            return false;
-        }
 
-        var lat = place.geometry.location.lat();
-        var lng = place.geometry.location.lng();
-
-        effdf_setlatlng(lat, lng);
-
-        console.log(lat);
-        console.log(lng);
-
-        effdf_runAjaxUpdate();
-        
-        return false; 
-    });
-    
-    jQuery(this).removeAttr('disabled');
-
-    jQuery(this).on('keyup', function() {
-        if (jQuery(this).val()=='') {
-            effdf_setlatlng('', '');
-            effdf_runAjaxUpdate();
-        }
-    });
-});
+            jQuery(this).on('keyup', function() {
+                if (jQuery(this).val()=='') {
+                    effdf_setlatlng('', '');
+                    effdf_runAjaxUpdate();
+                }
+            });
+        });
     }
 
     jQuery('.effective-dealers-checklist-filter input[type=checkbox]').on('change', function(e) {
