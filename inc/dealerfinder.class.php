@@ -39,7 +39,7 @@ class EffectiveDealerFinder
     {
         wp_enqueue_script(
             'google-api-js',
-            'https://maps.googleapis.com/maps/api/js?key=' . effdf_get_api_key() . '&libraries=geocoder,geometry,places&callback=init_effdf_public',
+            'https://maps.googleapis.com/maps/api/js?key=' . effdf_get_api_key() . '&libraries=geocoding,geometry,places&callback=init_effdf_public',
             array('effdf-js'), '1.1', true
         );
     
