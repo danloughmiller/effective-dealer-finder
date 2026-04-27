@@ -51,3 +51,17 @@ class DealerTableColumns extends WPAdminTableColumns
 
 
 new DealerTableColumns();
+
+add_action( 'admin_menu', function() {
+    add_submenu_page(
+        'edit.php?post_type=dealer',
+        'Import Dealers',
+        'Import Dealers',
+        'manage_options',
+        'effdf-import',
+        function() {
+            $importer = new EffectiveDealerImport();
+            $importer->render();
+        }
+    );
+} );

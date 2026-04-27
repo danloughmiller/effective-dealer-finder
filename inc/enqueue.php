@@ -1,5 +1,15 @@
 <?php
 
+add_action('admin_enqueue_scripts', function( $hook ) {
+    // Import page styles
+    if ( isset( $_GET['page'] ) && $_GET['page'] === 'effdf-import' ) {
+        wp_enqueue_style(
+            'effdf-import-css',
+            plugins_url() . '/effective-dealer-finder/assets/css/effdf-import.css'
+        );
+    }
+} );
+
 add_action('admin_enqueue_scripts', function() {
     wp_enqueue_script(
         'google-api-js',
